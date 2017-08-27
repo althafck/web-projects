@@ -1,0 +1,97 @@
+<html>
+    <head>
+        <script src="js/vue.js"></script>
+    </head>
+
+    <body>
+        <div id="app">
+
+            <p>{{ title }}</p>
+            <input type="text" v-on:input="changeTitle">
+
+            <hr>
+
+            <a v-bind:href="link">Google</a>
+            <p v-html="finishedLink"></p>
+
+            <hr>
+
+            <p>Counter: {{count}} | {{secondCounter}}</p>
+            <p>Result: {{result()}} | {{output}}</p>
+            <button v-on:click="increase(10)">Increase</button>
+            <button v-on:click="decrease(10)">Decrease</button>
+            <button v-on:click="secondCounter++">second Counter</button>
+
+            <hr>    
+
+            <p v-on:mousemove="updateCoordinate">Coordinaets: {{x}} / {{y}} - <span v-on:mousemove.stop>DEAD SPOT</span> </p>
+
+            <hr>
+
+            <input type="text" v-on:keyup.enter.space="alertMe">
+            
+            <hr>
+
+            <h4>Two way data binding</h4>
+            <p>{{name}}</p>
+            <input type="text" v-model="name"> 
+
+          </div>
+
+          <script>
+          new Vue(
+                    {
+                        el: '#app',
+                        data: {
+                        title: 'hello world!!',
+                        link: 'http://google.com',
+                        finishedLink: '<a href="http://yahoo.com">yahoo</a>',
+                        count: 0,
+                        secondCounter : 0,
+                        x: 0,
+                        y: 0,
+                        name: 'something'
+                        },
+                        computed: {
+                            output: function() {
+                                console.log('Computed');
+                                return this.count > 50 ? 'Greater than 50' : 'Lesser than 50';
+                            }
+                        },
+                        watch: {
+                            count: function() {
+                                var vm = this;
+                                setTimeout(function() {
+                                    vm.count = 0;
+                                    console.log('watching count');
+                                }, 2000);
+                            } 
+                        },
+                        methods: {
+                            changeTitle: function(event) {
+                            this.title = event.target.value;
+                            },
+                            increase: function(x) {
+                                this.count += x;
+                            },
+                            decrease: function(x) {
+                                this.count -= x;
+                            },
+                            result: function() {
+                                console.log('methods');
+                                return this.count > 50 ? 'Greater than 50' : 'Lesser than 50';
+                            },
+                            updateCoordinate: function(event) {
+                                this.x = event.clientX;
+                                this.y = event.clientY;
+                            },
+                            alertMe: function() {
+                                alert("testing alert in vue");
+                            }
+                        }
+                    }
+                );
+          </script>
+
+    </body>
+</html>
